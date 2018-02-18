@@ -10,8 +10,12 @@ import (
 func main() {
 
 	bot := setUpBot()
+	http.HandleFunc("/", MainHandler)
+	log.Fatal(http.ListenAndServe(net.JoinHostPort("0.0.0.0", os.Getenv("PORT")), nil))
 	runBot(bot)
 
-	log.Fatal(http.ListenAndServe(net.JoinHostPort("0.0.0.0", os.Getenv("PORT")), nil))
+}
 
+func MainHandler(resp http.ResponseWriter, _ *http.Request) {
+	resp.Write([]byte("Hi there! I'm DndSpellsBot!"))
 }

@@ -11,7 +11,7 @@ func main() {
 
 	bot := setUpBot()
 	http.HandleFunc("/", MainHandler)
-	log.Fatal(http.ListenAndServe(net.JoinHostPort("0.0.0.0", os.Getenv("PORT")), nil))
+	go http.ListenAndServe(net.JoinHostPort("0.0.0.0", os.Getenv("PORT")), nil)
 	runBot(bot)
 
 }

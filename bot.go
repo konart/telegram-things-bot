@@ -4,6 +4,7 @@ import (
 	"gopkg.in/telegram-bot-api.v4"
 	"log"
 	"os"
+	"net/http"
 )
 
 var token = os.Getenv("TELETHINGS_BOT_TOKEN")
@@ -24,10 +25,15 @@ func runBot(bot *tgbotapi.BotAPI) {
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
-	updates, err := bot.GetUpdatesChan(u)
+	//updates, err := bot.GetUpdatesChan(u)
+
+	_, err := bot.SetWebhook(tgbotapi.NewWebhookWithCert("https://blooming-ravine-96241.herokuapp.com/"+bot.Token, "server.crt"))
 	if err != nil {
-		log.Panic(err)
+		log.Fatal(err)
 	}
+
+	updates := bot.ListenForWebhook("/" + bot.Token)
+	go http.ListenAndServeTLS("0.0.0.0" + os.Getenv("PORT"), "server.crt", "server.key", nil)
 
 	for update := range updates {
 		if update.Message == nil {

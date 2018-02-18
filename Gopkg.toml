@@ -28,3 +28,6 @@
 [[constraint]]
   name = "github.com/aws/aws-sdk-go-v2"
   version = "2.0.0-preview.2"
+
+[metadata.heroku]
+  root-package = "github.com/konart/telegram-things-bot"

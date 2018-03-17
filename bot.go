@@ -4,7 +4,7 @@ import (
 	"gopkg.in/telegram-bot-api.v4"
 	"log"
 	"os"
-	"net/http"
+	//"net/http"
 )
 
 var token = os.Getenv("TELETHINGS_BOT_TOKEN")
@@ -12,6 +12,7 @@ var token = os.Getenv("TELETHINGS_BOT_TOKEN")
 func setUpBot() *tgbotapi.BotAPI {
 	bot, err := tgbotapi.NewBotAPI(token)
 	if err != nil {
+		log.Println(token)
 		log.Panic(err)
 	}
 
@@ -27,13 +28,13 @@ func runBot(bot *tgbotapi.BotAPI) {
 
 	//updates, err := bot.GetUpdatesChan(u)
 
-	_, err := bot.SetWebhook(tgbotapi.NewWebhookWithCert("https://blooming-ravine-96241.herokuapp.com/"+bot.Token, "server.crt"))
+	_, err := bot.SetWebhook(tgbotapi.NewWebhookWithCert("https://mighty-wave-18558.herokuapp.com/"+bot.Token, "server.crt"))
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	updates := bot.ListenForWebhook("/" + bot.Token)
-	go http.ListenAndServeTLS("0.0.0.0" + os.Getenv("PORT"), "server.crt", "server.key", nil)
+	//go http.ListenAndServeTLS("0.0.0.0" + os.Getenv("PORT"), "server.crt", "server.key", nil)
 
 	for update := range updates {
 		if update.Message == nil {
@@ -56,7 +57,7 @@ func handleCommands(update tgbotapi.Update) tgbotapi.MessageConfig {
 	switch update.Message.Command() {
 	case "register":
 	case "new":
-		ses()
+		sendToThings([]string{"konapt@gmail.com"}, "Testing delivery", "Test successful")
 		resp = "Trying to send your note to Things3!"
 	case "delete":
 	case "help":
@@ -74,4 +75,9 @@ Here is the list of coomands I understand:
 	}
 	msg.Text = resp
 	return msg
+}
+
+
+func sendToThings(to []string, title, body string) {
+
 }

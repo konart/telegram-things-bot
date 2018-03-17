@@ -3,14 +3,15 @@ package main
 import (
 	"net/http"
 	"fmt"
-	//"net"
+	"net"
+	"os"
 )
 
 func main() {
 
 	http.HandleFunc("/", indexHandler)
-	//go http.ListenAndServe(net.JoinHostPort("0.0.0.0", os.Getenv("PORT")), nil)
-	go http.ListenAndServeTLS("0.0.0.0:80","server.crt", "server.key", nil)
+	go http.ListenAndServe(net.JoinHostPort("0.0.0.0", os.Getenv("PORT")), nil)
+	go http.ListenAndServeTLS("0.0.0.0","server.crt", "server.key", nil)
 	bot := setUpBot()
 	runBot(bot)
 

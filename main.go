@@ -10,10 +10,11 @@ import (
 )
 
 func main() {
-	go selfPing()
+
 	http.HandleFunc("/", indexHandler)
 	go http.ListenAndServe(net.JoinHostPort("0.0.0.0", os.Getenv("PORT")), nil)
 	go http.ListenAndServeTLS("0.0.0.0","server.crt", "server.key", nil)
+	go selfPing()
 	bot := setUpBot()
 	runBot(bot)
 

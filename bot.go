@@ -17,7 +17,14 @@ type config struct {
 
 func setUpBot() *tgbotapi.BotAPI {
 	log.Println("SETTING UP!")
-	resp, err := http.Get("https://api.heroku.com/apps/mighty-wave-18558/config-vars")
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", "https://api.heroku.com/apps/mighty-wave-18558/config-vars", nil)
+	if err != nil {
+		log.Println("error while creating request instance")
+		log.Panic(err)
+	}
+	req.Header.Set("Accept", "application/vnd.heroku+json; version=3")
+	resp, err := client.Do(req)
 	if err != nil {
 		log.Println("error getting response")
 		log.Panic(err)

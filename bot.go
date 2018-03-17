@@ -32,6 +32,7 @@ func setUpBot() *tgbotapi.BotAPI {
 	if err != nil {
 		log.Panic(err)
 	}
+	log.Println(config.Token)
 	bot, err := tgbotapi.NewBotAPI(config.Token)
 	if err != nil {
 		log.Println(config.Token)

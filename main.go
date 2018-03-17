@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"log"
+	"time"
 )
 
 func main() {
-
+	go selfPing()
 	http.HandleFunc("/", indexHandler)
 	go http.ListenAndServe(net.JoinHostPort("0.0.0.0", os.Getenv("PORT")), nil)
 	go http.ListenAndServeTLS("0.0.0.0","server.crt", "server.key", nil)
@@ -28,4 +30,16 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintln(w, "Nothing to see here, human, move along.")
+}
+
+func selfPing() {
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", "https://mighty-wave-18558.herokuapp.com/", nil)
+	if err != nil {
+		log.Panic("couldn't create request for selfPing")
+	}
+	for {
+		time.Sleep(time.Second*15)
+		client.Do(req)
+	}
 }

@@ -16,12 +16,15 @@ type config struct {
 }
 
 func setUpBot() *tgbotapi.BotAPI {
+	log.Println("SETTING UP")
 	resp, err := http.Get("https://api.heroku.com/apps/mighty-wave-18558/config-vars")
 	if err != nil {
+		log.Println("error getting response")
 		log.Panic(err)
 	}
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
+		log.Println("can't read the body")
 		log.Panic(err)
 	}
 	config := &config{}

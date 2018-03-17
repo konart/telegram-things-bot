@@ -24,6 +24,7 @@ func setUpBot() *tgbotapi.BotAPI {
 		log.Panic(err)
 	}
 	req.Header.Set("Accept", "application/vnd.heroku+json; version=3")
+	req.Header.Set("Authorization", "Basic a29uYXB0QGdtYWlsLmNvbTo4KXtrMUF5Pw==")
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Println("error getting response")

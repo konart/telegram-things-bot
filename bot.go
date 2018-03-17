@@ -3,16 +3,35 @@ package main
 import (
 	"gopkg.in/telegram-bot-api.v4"
 	"log"
-	"os"
+	//"os"
 	//"net/http"
+	"net/http"
+	"io/ioutil"
+	"encoding/json"
 )
 
-var token = os.Getenv("TELETHINGS_BOT_TOKEN")
+//var token = os.Getenv("TELETHINGS_BOT_TOKEN")
+type config struct {
+	Token string `json:"TELETHINGS_BOT_TOKEN"`
+}
 
 func setUpBot() *tgbotapi.BotAPI {
-	bot, err := tgbotapi.NewBotAPI(token)
+	resp, err := http.Get("https://api.heroku.com/apps/mighty-wave-18558/config-vars")
 	if err != nil {
-		log.Println(token)
+		log.Panic(err)
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Panic(err)
+	}
+	config := &config{}
+	err = json.Unmarshal(body, config)
+	if err != nil {
+		log.Panic(err)
+	}
+	bot, err := tgbotapi.NewBotAPI(config.Token)
+	if err != nil {
+		log.Println(config.Token)
 		log.Panic(err)
 	}
 

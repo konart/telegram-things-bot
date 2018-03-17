@@ -16,7 +16,7 @@ type config struct {
 }
 
 func setUpBot() *tgbotapi.BotAPI {
-	log.Println("SETTING UP")
+	log.Println("SETTING UP!")
 	resp, err := http.Get("https://api.heroku.com/apps/mighty-wave-18558/config-vars")
 	if err != nil {
 		log.Println("error getting response")

@@ -88,7 +88,7 @@ func handleCommands(update tgbotapi.Update, bot *tgbotapi.BotAPI) {
 	switch update.Message.Command() {
 	case "register":
 	case "new":
-		resp, title, body = getTitleBody(update.Message.Text)
+		resp, title, body = getTitleBody(update.Message.CommandArguments())
 		go sendToThings([]string{"konapt@gmail.com"}, title, body)
 	case "delete":
 	case "help":

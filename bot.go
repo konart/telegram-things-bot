@@ -88,8 +88,13 @@ func handleCommands(update tgbotapi.Update, bot *tgbotapi.BotAPI) {
 	switch update.Message.Command() {
 	case "register":
 	case "new":
-		resp, title, body = getTitleBody(update.Message.CommandArguments())
-		go sendToThings([]string{"konapt@gmail.com"}, title, body)
+		title, body = getTitleBody(update.Message.CommandArguments())
+		if len(title) == 0 && len(body) == 0 {
+			resp = "Sorry, a note should have a title at least."
+		} else {
+			resp = "Trying to send your note to Things3!"
+			go sendToThings([]string{"konapt@gmail.com"}, title, body)
+		}
 	case "delete":
 	case "help":
 		resp = `
@@ -108,14 +113,11 @@ Here is the list of coomands I understand:
 	bot.Send(msg)
 }
 
-func getTitleBody(text string) (string, string, string)  {
-	var resp, title, body string
-	resp = "Trying to send your note to Things3!"
+func getTitleBody(text string) (string, string)  {
+	var title, body string
 
 	artifacts := strings.Split(text, "\t")
 	switch len(artifacts) {
-	case 0:
-		resp = "Sorry, a note should have a title at least."
 	case 1:
 		title = artifacts[0]
 		body = ""
@@ -123,7 +125,7 @@ func getTitleBody(text string) (string, string, string)  {
 		title = artifacts[0]
 		body = artifacts[1]
 	}
-	return resp, title, body
+	return title, body
 }
 
 

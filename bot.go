@@ -112,9 +112,9 @@ Here is the list of coomands I understand:
 
 func sendToThings(to []string, title, body string) {
 	msg, err := json.Marshal(struct {
-		to []string
-		title string
-		body string
+		To []string `json:"to"`
+		Title string `json:"title"`
+		Body string `json:"body"`
 	}{to, title, body})
 	if err != nil {
 		log.Panicln("failed to marshall the message")

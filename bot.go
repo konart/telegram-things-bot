@@ -116,7 +116,7 @@ Here is the list of coomands I understand:
 func getTitleBody(text string) (string, string)  {
 	var title, body string
 
-	artifacts := strings.Split(text, "\t")
+	artifacts := strings.Split(text, "|")
 	switch len(artifacts) {
 	case 1:
 		title = artifacts[0]

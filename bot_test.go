@@ -8,7 +8,7 @@ func TestGetTitleBody(t *testing.T) {
 		expectedTitle string
 		expectedBody string
 	}{
-		{"Title\tBody", "Title", "Body"},
+		{"Title|Body", "Title", "Body"},
 		{"", "", ""},
 		{"Some title", "Some title", ""},
 	}

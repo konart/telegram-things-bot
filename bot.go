@@ -120,7 +120,7 @@ func sendToThings(to []string, title, body string) {
 		log.Panicln("failed to marshall the message")
 	}
 	client := http.Client{}
-	req, err := http.NewRequest("POST", "https://mailer-dot-telethings-196912.appspot.com", bytes.NewReader(msg))
+	req, err := http.NewRequest("POST", "https://mailer-dot-telethings-196912.appspot.com/msg", bytes.NewReader(msg))
 	if err != nil {
 		log.Panicln("failed to create a new request")
 	}

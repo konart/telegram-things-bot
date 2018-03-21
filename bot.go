@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"io/ioutil"
 	"encoding/json"
+	"strings"
+	"bytes"
 )
 
 //var token = os.Getenv("TELETHINGS_BOT_TOKEN")
@@ -110,5 +112,18 @@ Here is the list of coomands I understand:
 
 
 func sendToThings(to []string, title, body string) {
-
+	msg, err := json.Marshal(struct {
+		to []string
+		title string
+		body string
+	}{to, title, body})
+	if err != nil {
+		log.Panicln("failed to marshall the message")
+	}
+	client := http.Client{}
+	req, err := http.NewRequest("POST", "https://mailer-dot-telethings-196912.appspot.com", bytes.NewReader(msg))
+	if err != nil {
+		log.Panicln("failed to create a new request")
+	}
+	client.Do(req)
 }

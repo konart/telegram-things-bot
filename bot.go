@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"encoding/json"
 	"bytes"
+	"strings"
 )
 
 //var token = os.Getenv("TELETHINGS_BOT_TOKEN")
@@ -73,24 +74,23 @@ func runBot(bot *tgbotapi.BotAPI) {
 			continue
 		}
 
-		msg := handleCommands(update)
+		handleCommands(update, bot)
 
 		log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
-
-		bot.Send(msg)
 	}
 }
 
-func handleCommands(update tgbotapi.Update) tgbotapi.MessageConfig {
-	var resp string
+func handleCommands(update tgbotapi.Update, bot *tgbotapi.BotAPI) {
+	var resp, title, body string
 	var msg = tgbotapi.NewMessage(update.Message.Chat.ID, resp)
 
 	log.Println(update.Message.Command())
 	switch update.Message.Command() {
 	case "register":
 	case "new":
-		sendToThings([]string{"konapt@gmail.com"}, "Testing delivery", "Test successful")
-		resp = "Trying to send your note to Things3!"
+		resp, title, body = getTitleBody(update.Message.Text)
+		go sendToThings([]string{"konapt@gmail.com"}, title, body)
+		resp = ""
 	case "delete":
 	case "help":
 		resp = `
@@ -106,7 +106,25 @@ Here is the list of coomands I understand:
 		msg.ReplyToMessageID = update.Message.MessageID
 	}
 	msg.Text = resp
-	return msg
+	bot.Send(msg)
+}
+
+func getTitleBody(text string) (string, string, string)  {
+	var resp, title, body string
+	resp = "Trying to send your note to Things3!"
+
+	artifacts := strings.Split(text, "\t")
+	switch len(artifacts) {
+	case 0:
+		resp = "Sorry, a note should have a title at least."
+	case 1:
+		title = artifacts[0]
+		body = ""
+	case 2:
+		title = artifacts[0]
+		body = artifacts[1]
+	}
+	return resp, title, body
 }
 
 
@@ -125,4 +143,8 @@ func sendToThings(to []string, title, body string) {
 		log.Panicln("failed to create a new request")
 	}
 	client.Do(req)
+}
+
+func getUserThingsMail()  {
+
 }

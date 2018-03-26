@@ -20,5 +20,4 @@ COPY server.crt /
 COPY server.key /
 
 ENTRYPOINT ["./app"]
-ENV TELETHINGS_BOT_TOKEN=535194819:AAHg5VYEspALeV6bjKXF14nQbN8kSaPlAyA
 CMD app

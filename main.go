@@ -40,7 +40,7 @@ func selfPing() {
 		log.Panic("couldn't create request for selfPing")
 	}
 	for {
-		time.Sleep(time.Second*15)
+		time.Sleep(time.Minute*30)
 		client.Do(req)
 	}
 }

@@ -4,12 +4,12 @@ import (
 	"gopkg.in/telegram-bot-api.v4"
 	"log"
 	//"os"
-	//"net/http"
 	"net/http"
 	"io/ioutil"
 	"encoding/json"
 	"bytes"
 	"strings"
+	"fmt"
 )
 
 //var token = os.Getenv("TELETHINGS_BOT_TOKEN")
@@ -17,8 +17,16 @@ type config struct {
 	Token string `json:"TELETHINGS_BOT_TOKEN"`
 }
 
+func talkToAPI(c config) {
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", fmt.Sprintf("https://api.telegram.org/bot%s/setWebhook?url=https://mighty-wave-18558.herokuapp.com/%s", c.Token, c.Token), nil)
+	if err != nil {
+		log.Panicf("couldn't create a request to API, %s", err)
+	}
+	client.Do(req)
+}
+
 func setUpBot() *tgbotapi.BotAPI {
-	log.Println("SETTING UP!")
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", "https://api.heroku.com/apps/mighty-wave-18558/config-vars", nil)
 	if err != nil {
@@ -42,16 +50,15 @@ func setUpBot() *tgbotapi.BotAPI {
 	if err != nil {
 		log.Panic(err)
 	}
-	log.Println(config.Token)
 	bot, err := tgbotapi.NewBotAPI(config.Token)
 	if err != nil {
-		log.Println(config.Token)
 		log.Panic(err)
 	}
 
 	bot.Debug = true
 
 	log.Printf("Authorized on account %s", bot.Self.UserName)
+	talkToAPI(*config)
 	return bot
 }
 

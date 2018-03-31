@@ -1,18 +1,18 @@
 package main
 
 import (
-	"net/http"
 	"fmt"
-	"net"
-	"os"
 	"log"
+	"net"
+	"net/http"
+	"os"
 	"time"
 )
 
 func main() {
 	http.HandleFunc("/", indexHandler)
 	go http.ListenAndServe(net.JoinHostPort("0.0.0.0", os.Getenv("PORT")), nil)
-	go http.ListenAndServeTLS("0.0.0.0","server.crt", "server.key", nil)
+	go http.ListenAndServeTLS("0.0.0.0", "server.crt", "server.key", nil)
 	go selfPing()
 	bot := setUpBot()
 	runBot(bot)
@@ -33,7 +33,7 @@ func selfPing() {
 		log.Panic("couldn't create request for selfPing")
 	}
 	for {
-		time.Sleep(time.Minute*30)
+		time.Sleep(time.Minute * 30)
 		client.Do(req)
 	}
 }

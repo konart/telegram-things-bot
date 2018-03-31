@@ -4,9 +4,9 @@ import "testing"
 
 func TestGetTitleBody(t *testing.T) {
 	testCases := []struct {
-		text string
+		text          string
 		expectedTitle string
-		expectedBody string
+		expectedBody  string
 	}{
 		{"Title|Body", "Title", "Body"},
 		{"", "", ""},
@@ -16,7 +16,7 @@ func TestGetTitleBody(t *testing.T) {
 	for i, tc := range testCases {
 		title, body := getTitleBody(tc.text)
 		if title != tc.expectedTitle || body != tc.expectedBody {
-			t.Errorf("TestCase #%d: expected title '%s' and body '%s', got" +
+			t.Errorf("TestCase #%d: expected title '%s' and body '%s', got"+
 				"'%s' and '%s' instead", i, tc.expectedTitle, tc.expectedBody, title, body)
 		}
 	}

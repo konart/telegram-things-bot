@@ -4,12 +4,13 @@ import (
 	"gopkg.in/telegram-bot-api.v4"
 	"log"
 	//"os"
-	"net/http"
-	"io/ioutil"
-	"encoding/json"
 	"bytes"
-	"strings"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
+	"strings"
+	"time"
 )
 
 //var token = os.Getenv("TELETHINGS_BOT_TOKEN")
@@ -77,6 +78,7 @@ func runBot(bot *tgbotapi.BotAPI) {
 	//go http.ListenAndServeTLS("0.0.0.0" + os.Getenv("PORT"), "server.crt", "server.key", nil)
 
 	for update := range updates {
+		time.Sleep(time.Second)
 		if update.Message == nil {
 			continue
 		}
@@ -120,7 +122,7 @@ Here is the list of coomands I understand:
 	bot.Send(msg)
 }
 
-func getTitleBody(text string) (string, string)  {
+func getTitleBody(text string) (string, string) {
 	var title, body string
 
 	artifacts := strings.Split(text, "|")
@@ -135,12 +137,11 @@ func getTitleBody(text string) (string, string)  {
 	return title, body
 }
 
-
 func sendToThings(to []string, title, body string) {
 	msg, err := json.Marshal(struct {
-		To []string `json:"to"`
-		Title string `json:"title"`
-		Body string `json:"body"`
+		To    []string `json:"to"`
+		Title string   `json:"title"`
+		Body  string   `json:"body"`
 	}{to, title, body})
 	if err != nil {
 		log.Panicln("failed to marshall the message")
@@ -153,6 +154,6 @@ func sendToThings(to []string, title, body string) {
 	client.Do(req)
 }
 
-func getUserThingsMail()  {
+func getUserThingsMail() {
 
 }
